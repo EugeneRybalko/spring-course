@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="classpath:file-paths.properties"/>
+
+    <bean class="facade.BookingFacadeImpl" >
+        <constructor-arg type="service.UserService" ref="service.UserService"/>
+        <constructor-arg type="service.EventService" ref="service.EventService"/>
+        <constructor-arg type="service.TicketService" ref="service.TicketService"/>
+    </bean>
+
+    <bean id="service.UserService" class="service.UserService" autowire="byType"/>
+    <bean id="service.EventService" class="service.EventService" autowire="byType"/>
+    <bean id="service.TicketService" class="service.TicketService" autowire="byType"/>
+
+    <bean class="dao.EventDao" init-method="init" p:filePath="${eventFile}"/>
+    <bean class="dao.TicketDao" init-method="init" p:filePath="${ticketFile}"/>
+    <bean class="dao.UserDao" init-method="init" p:filePath="${userFile}"/>
+</beans>

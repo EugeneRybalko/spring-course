@@ -1,0 +1,16 @@
+{
+  "1" : {
+    "id" : 1,
+    "eventId" : 1,
+    "userId" : 1,
+    "category" : "STANDARD",
+    "place" : 1
+  },
+  "2" : {
+    "id" : 2,
+    "eventId" : 2,
+    "userId" : 1,
+    "category" : "BAR",
+    "place" : 4
+  }
+}
