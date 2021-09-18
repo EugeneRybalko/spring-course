@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public final class UserDao {
+public class UserDao {
 
     private String filePath;
     private Map<Long, User> userStorage;
@@ -61,9 +61,8 @@ public final class UserDao {
         if (userStorage.containsKey(user.getId())) {
             userStorage.put(user.getId(), user);
             return user;
-        } else {
-            throw new IllegalStateException("There are no event with id: " + user.getId());
         }
+        throw new IllegalStateException("There are no event with id: " + user.getId());
     }
 
     public boolean deleteUser(long userId) {

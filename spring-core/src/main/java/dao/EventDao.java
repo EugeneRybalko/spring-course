@@ -11,7 +11,7 @@ import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public final class EventDao {
+public class EventDao {
 
     private String filePath;
     private Map<Long, Event> eventStorage;
@@ -39,12 +39,12 @@ public final class EventDao {
 
     public List<Event> findEventByDay(Date date) {
         return eventStorage.values().stream().filter(event -> {
-            Calendar calendar1 = Calendar.getInstance();
-            Calendar calendar2 = Calendar.getInstance();
-            calendar1.setTime(event.getDate());
-            calendar2.setTime(date);
-            return calendar1.get(Calendar.DAY_OF_YEAR) == calendar2.get(Calendar.DAY_OF_YEAR) &&
-                    calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR);
+            Calendar eventCalendar = Calendar.getInstance();
+            Calendar expectedEventCalendar = Calendar.getInstance();
+            eventCalendar.setTime(event.getDate());
+            expectedEventCalendar.setTime(date);
+            return eventCalendar.get(Calendar.DAY_OF_YEAR) == expectedEventCalendar.get(Calendar.DAY_OF_YEAR) &&
+                    eventCalendar.get(Calendar.YEAR) == expectedEventCalendar.get(Calendar.YEAR);
         }).collect(Collectors.toList());
     }
 
@@ -63,9 +63,8 @@ public final class EventDao {
         if (eventStorage.containsKey(event.getId())) {
             eventStorage.put(event.getId(), event);
             return event;
-        } else {
-            throw new IllegalStateException("There are no event with id: " + event.getId());
         }
+        throw new IllegalStateException("There are no event with id: " + event.getId());
     }
 
     public boolean deleteEvent(long eventId) {

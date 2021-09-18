@@ -5,7 +5,7 @@ import model.Ticket;
 
 import java.util.List;
 
-public final class TicketService {
+public class TicketService {
 
     private TicketDao ticketDao;
 

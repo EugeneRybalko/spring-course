@@ -6,7 +6,7 @@ import model.Event;
 import java.util.Date;
 import java.util.List;
 
-public final class EventService {
+public class EventService {
 
     private EventDao eventDao;
 

@@ -18,38 +18,40 @@ import java.util.Objects;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = "classpath:beans.xml")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class BookingFacadeIntegrationTest {
+class BookingFacadeIntegrationTest {
 
-    private static final String TEST_USER_EMAIL = "yemail@gmail.com";
+    static final String TEST_USER_EMAIL = "yemail@gmail.com";
 
     @Autowired
-    private BookingFacade bookingFacade;
+    BookingFacade bookingFacade;
 
     @Test
     @Order(1)
-    public void Should_Pass_When_UserIsCreated() {
-        final User user = new User();
+    void Should_Pass_When_UserIsCreated() {
+        User user = new User();
         user.setName("Yevhenii");
         user.setEmail(TEST_USER_EMAIL);
         bookingFacade.createUser(user);
-        Assertions.assertTrue(user.getId() != 0);
+        Assertions.assertNotEquals(0, user.getId());
     }
 
     @Test
     @Order(2)
-    public void Should_Pass_When_UserBookedTicket() {
-        final User user = bookingFacade.getUserByEmail(TEST_USER_EMAIL);
-        final Event event = bookingFacade.getEventById(1);
-        final int place = 6;
+    void Should_Pass_When_UserBookedTicket() {
+        User user = bookingFacade.getUserByEmail(TEST_USER_EMAIL);
+        Event event = bookingFacade.getEventById(1);
+        int place = 6;
         Assertions.assertTrue(Objects.nonNull(bookingFacade.bookTicket(user.getId(), event.getId(), place, Ticket.Category.PREMIUM)));
     }
 
     @Test
     @Order(3)
-    public void Should_ThrowException_When_UserTryingToBookSamePlace() {
-        final User user = bookingFacade.getUserByEmail(TEST_USER_EMAIL);
-        final Event event = bookingFacade.getEventById(1);
-        final int place = 6;
-        Assertions.assertThrows(IllegalStateException.class, () -> bookingFacade.bookTicket(user.getId(), event.getId(), place, Ticket.Category.PREMIUM));
+    void Should_ThrowException_When_UserTryingToBookSamePlace() {
+        User user = bookingFacade.getUserByEmail(TEST_USER_EMAIL);
+        Event event = bookingFacade.getEventById(1);
+        int place = 6;
+        long userId = user.getId();
+        long eventId = event.getId();
+        Assertions.assertThrows(IllegalStateException.class, () -> bookingFacade.bookTicket(userId, eventId, place, Ticket.Category.PREMIUM));
     }
 }

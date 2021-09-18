@@ -1,12 +1,11 @@
 package service;
 
 import dao.UserDao;
-import model.Event;
 import model.User;
 
 import java.util.List;
 
-public final class UserService {
+public class UserService {
 
     private UserDao userDao;
 
