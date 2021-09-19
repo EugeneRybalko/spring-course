@@ -2,20 +2,18 @@ package service;
 
 import dao.EventDao;
 import model.Event;
-import org.assertj.core.api.Assertions;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -39,6 +37,7 @@ class EventServiceTest {
 
     @BeforeEach
     void setUp() {
+        eventService = new EventService();
         eventService.setEventDao(eventDao);
     }
 
@@ -62,13 +61,19 @@ class EventServiceTest {
 
     @Test
     void addEvent_EventIsAdded() {
+        when(eventDao.insertEvent(any(Event.class))).thenReturn(testEvent);
+        assertThat(eventService.addEvent(testEvent)).isEqualTo(testEvent);
     }
 
     @Test
     void updateEvent_EventIsUpdated() {
+        when(eventDao.updateEvent(any(Event.class))).thenReturn(testEvent);
+        assertThat(eventService.updateEvent(testEvent)).isEqualTo(testEvent);
     }
 
     @Test
     void removeEvent_EventIsRemoved() {
+        when(eventDao.deleteEvent(anyLong())).thenReturn(true);
+        assertTrue(eventService.removeEvent(1));
     }
 }
