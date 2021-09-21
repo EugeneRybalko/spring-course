@@ -22,58 +22,55 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class EventServiceTest {
 
-    @Mock EventDao eventDao;
+    @Mock EventDao eventDaoMock;
     EventService eventService;
 
     static Event testEvent;
 
     @BeforeAll
     static void beforeAll() {
-        testEvent = new Event();
-        testEvent.setId(1);
-        testEvent.setTitle("Test Event");
-        testEvent.setDate(new Date());
+        testEvent = Event.builder().id(1).title("Test Event").date(new Date()).build();
     }
 
     @BeforeEach
     void setUp() {
         eventService = new EventService();
-        eventService.setEventDao(eventDao);
+        eventService.setEventDao(eventDaoMock);
     }
 
     @Test
     void retrieveEventById_EventIsRetrieved() {
-        when(eventDao.findEventById(anyLong())).thenReturn(testEvent);
+        when(eventDaoMock.findEventById(anyLong())).thenReturn(testEvent);
         assertThat(eventService.retrieveEventById(1)).isEqualTo(testEvent);
     }
 
     @Test
     void retrieveEventByTitle_EventIsRetrieved() {
-        when(eventDao.findEventByTitle(anyString())).thenReturn(Lists.newArrayList(testEvent));
+        when(eventDaoMock.findEventByTitle(anyString())).thenReturn(Lists.newArrayList(testEvent));
         assertThat(eventService.retrieveEventByTitle("Test Event")).isNotEmpty();
     }
 
     @Test
     void retrieveEventByDay_EventIsRetrieved() {
-        when(eventDao.findEventByDay(any(Date.class))).thenReturn(Lists.newArrayList(testEvent));
+        when(eventDaoMock.findEventByDay(any(Date.class))).thenReturn(Lists.newArrayList(testEvent));
         assertThat(eventService.retrieveEventByDay(new Date())).isNotEmpty();
     }
 
     @Test
     void addEvent_EventIsAdded() {
-        when(eventDao.insertEvent(any(Event.class))).thenReturn(testEvent);
+        when(eventDaoMock.insertEvent(any(Event.class))).thenReturn(testEvent);
         assertThat(eventService.addEvent(testEvent)).isEqualTo(testEvent);
     }
 
     @Test
     void updateEvent_EventIsUpdated() {
-        when(eventDao.updateEvent(any(Event.class))).thenReturn(testEvent);
+        when(eventDaoMock.updateEvent(any(Event.class))).thenReturn(testEvent);
         assertThat(eventService.updateEvent(testEvent)).isEqualTo(testEvent);
     }
 
     @Test
     void removeEvent_EventIsRemoved() {
-        when(eventDao.deleteEvent(anyLong())).thenReturn(true);
+        when(eventDaoMock.deleteEvent(anyLong())).thenReturn(true);
         assertTrue(eventService.removeEvent(1));
     }
 }

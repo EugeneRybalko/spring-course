@@ -17,7 +17,11 @@
     <bean id="service.EventService" class="service.EventService" autowire="byType"/>
     <bean id="service.TicketService" class="service.TicketService" autowire="byType"/>
 
-    <bean class="dao.EventDao" init-method="init" p:filePath="${eventFile}"/>
-    <bean class="dao.TicketDao" init-method="init" p:filePath="${ticketFile}"/>
-    <bean class="dao.UserDao" init-method="init" p:filePath="${userFile}"/>
+    <bean id="storage.EventStorage" class="storage.EventStorage" init-method="init" p:filePath="${eventFile}"/>
+    <bean id="storage.TicketStorage" class="storage.TicketStorage" init-method="init" p:filePath="${ticketFile}"/>
+    <bean id="storage.UserStorage" class="storage.UserStorage" init-method="init" p:filePath="${userFile}"/>
+
+    <bean class="dao.EventDao" autowire="byType"/>
+    <bean class="dao.TicketDao" autowire="byType"/>
+    <bean class="dao.UserDao" autowire="byType"/>
 </beans>

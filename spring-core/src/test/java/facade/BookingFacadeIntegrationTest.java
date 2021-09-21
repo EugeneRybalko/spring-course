@@ -28,9 +28,7 @@ class BookingFacadeIntegrationTest {
     @Test
     @Order(1)
     void Should_Pass_When_UserIsCreated() {
-        User user = new User();
-        user.setName("Yevhenii");
-        user.setEmail(TEST_USER_EMAIL);
+        User user = User.builder().name("Yevhenii").email(TEST_USER_EMAIL).build();
         bookingFacade.createUser(user);
         Assertions.assertNotEquals(0, user.getId());
     }

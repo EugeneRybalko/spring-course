@@ -1,71 +1,55 @@
 package dao;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import model.User;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
+import storage.UserStorage;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class UserDao {
+    
+    private UserStorage userStorage;
 
-    private String filePath;
-    private Map<Long, User> userStorage;
-
-
-    private void init() throws IOException {
-        Resource resource = new ClassPathResource(filePath);
-        if (resource.isFile()) {
-            String users = new String(Files.readAllBytes(resource.getFile().toPath()));
-            this.userStorage = new ObjectMapper().readValue(users, new TypeReference<Map<Long, User>>() {});
-        }
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
+    public void setUserStorage(UserStorage userStorage) {
+        this.userStorage = userStorage;
     }
 
     public User findUserById(long userId) {
-        return userStorage.get(userId);
+        return userStorage.getMap().get(userId);
     }
 
     public User findUserByEmail(String email) {
-        return userStorage.values().stream().filter(user -> email.equals(user.getEmail())).findFirst()
+        return userStorage.getMap().values().stream().filter(user -> email.equals(user.getEmail())).findFirst()
                 .orElseThrow(() -> new IllegalStateException("The are no user with email: " + email));
     }
 
     public List<User> findUserByName(String name) {
-        return userStorage.values().stream().filter(user -> name.equals(user.getName())).collect(Collectors.toList());
+        return userStorage.getMap().values().stream().filter(user -> name.equals(user.getName())).collect(Collectors.toList());
     }
 
     public User insertUser(User user) {
-        Optional<User> maxUser = userStorage.values().stream().max(Comparator.comparingLong(User::getId));
+        Optional<User> maxUser = userStorage.getMap().values().stream().max(Comparator.comparingLong(User::getId));
         long maxId = 1;
         if (maxUser.isPresent()) {
             maxId = maxUser.get().getId() + 1;
         }
         user.setId(maxId);
-        userStorage.put(maxId, user);
-        return userStorage.get(maxId);
+        userStorage.getMap().put(maxId, user);
+        return userStorage.getMap().get(maxId);
     }
 
     public User updateUser(User user) {
-        if (userStorage.containsKey(user.getId())) {
-            userStorage.put(user.getId(), user);
+        if (userStorage.getMap().containsKey(user.getId())) {
+            userStorage.getMap().put(user.getId(), user);
             return user;
         }
         throw new IllegalStateException("There are no event with id: " + user.getId());
     }
 
     public boolean deleteUser(long userId) {
-        return Objects.nonNull(userStorage.remove(userId));
+        return Objects.nonNull(userStorage.getMap().remove(userId));
     }
 }
