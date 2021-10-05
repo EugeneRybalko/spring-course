@@ -7,21 +7,21 @@
 
     <context:property-placeholder location="classpath:file-paths.properties"/>
 
-    <bean class="facade.BookingFacadeImpl" >
-        <constructor-arg type="service.UserService" ref="service.UserService"/>
-        <constructor-arg type="service.EventService" ref="service.EventService"/>
-        <constructor-arg type="service.TicketService" ref="service.TicketService"/>
+    <bean class="com.epam.app.facade.BookingFacadeImpl" >
+        <constructor-arg type="com.epam.app.service.UserService" ref="com.epam.app.service.UserService"/>
+        <constructor-arg type="com.epam.app.service.EventService" ref="com.epam.app.service.EventService"/>
+        <constructor-arg type="com.epam.app.service.TicketService" ref="com.epam.app.service.TicketService"/>
     </bean>
 
-    <bean id="service.UserService" class="service.UserService" autowire="byType"/>
-    <bean id="service.EventService" class="service.EventService" autowire="byType"/>
-    <bean id="service.TicketService" class="service.TicketService" autowire="byType"/>
+    <bean id="com.epam.app.service.UserService" class="com.epam.app.service.UserService" autowire="byType"/>
+    <bean id="com.epam.app.service.EventService" class="com.epam.app.service.EventService" autowire="byType"/>
+    <bean id="com.epam.app.service.TicketService" class="com.epam.app.service.TicketService" autowire="byType"/>
 
-    <bean id="storage.EventStorage" class="storage.EventStorage" init-method="init" p:filePath="${eventFile}"/>
-    <bean id="storage.TicketStorage" class="storage.TicketStorage" init-method="init" p:filePath="${ticketFile}"/>
-    <bean id="storage.UserStorage" class="storage.UserStorage" init-method="init" p:filePath="${userFile}"/>
+    <bean id="storage.EventStorage" class="com.epam.app.storage.EventStorage" init-method="init" p:filePath="${eventFile}"/>
+    <bean id="storage.TicketStorage" class="com.epam.app.storage.TicketStorage" init-method="init" p:filePath="${ticketFile}"/>
+    <bean id="storage.UserStorage" class="com.epam.app.storage.UserStorage" init-method="init" p:filePath="${userFile}"/>
 
-    <bean class="dao.EventDao" autowire="byType"/>
-    <bean class="dao.TicketDao" autowire="byType"/>
-    <bean class="dao.UserDao" autowire="byType"/>
+    <bean class="com.epam.app.dao.EventDao" autowire="byType"/>
+    <bean class="com.epam.app.dao.TicketDao" autowire="byType"/>
+    <bean class="com.epam.app.dao.UserDao" autowire="byType"/>
 </beans>
